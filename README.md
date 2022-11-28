@@ -1,70 +1,35 @@
-# Getting Started with Create React App
+## React bootstrap 설치 방법
+- 구글에 React bootstrap 검색해서 설치하면 된다
+- 터미널에 명령어 입력 
+```
+npm install react-bootstrap bootstrap 
+```
+- css 파일도 import 해줘야함. App.js 에 해주던지, 아니면 사이트에 있는 link 태그 복사해서 index.html 에 링크 넣어주던지 
+- 근데 부트스트랩 ui 는 컴포넌트라서 태그 이름이 대문자로 시작함
+  - 그리고 컴포넌트라서 상단에 import를 해줘야함. 
+  - 부트스트랩에서 가져오는 모든 컴포넌트들은 다 기재해주어야함.... 조금 불편 
+  ```
+  import { Button, Nav, Container, Navbar } from 'react-bootstrap';
+  ```
+- React bootstrap 이 아닌, 원래 Bootstrap 사이트에 있는 클래스들을 가지고 와서
+  기존에 쓰던 방식으로 사용해도 되지만, React 거를 사용하면 조금더 용량적인 측면에서 절약이 가능하다고 한다. 
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+<br><br>
+## 터미널에 npm 실행시키고 나오는것 
+- ctrl + c
 
-## Available Scripts
 
-In the project directory, you can run:
+<br><br>
 
-### `npm start`
+## 이미지 넣기 
+- img 같은건 src 폴더에 넣어주어야 한다. 
+- Css 파일에서 넣기는 그냥 동일함. 경로 입력하면 됨. 일반적인것과 동일함
+- Html 태그에서 style 속성으로 넣기
+  1. 이미지의 경로를 상단에 import 해줘야 한다.
+  2. 임포트 한것은 변수 취급 받기 때문에, '+ 변수명 +' 형식으로 넣어주어야 한다.
+- img 태그에서 src 로 넣기 
+```
+  import 작명 from './images/mainBg.png'
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
-
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+  <div style={{ background:'url('+ 작명 +')' }}
+```
