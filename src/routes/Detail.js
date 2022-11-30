@@ -1,18 +1,22 @@
-import data from './data'
+import data from '../data'
 import {useState} from "react";
+import {useParams} from "react-router-dom";
+import styled from 'styled-components';
 
-function Detail(){
+function Detail(props){
+
+    let {id} = useParams()
     return (
         <>
             <div className="container">
                 <div className="row">
                     <div className="col-md-6">
-                        <img src="https://codingapple1.github.io/shop/shoes1.jpg" width="100%" />
+                        <img src={'https://codingapple1.github.io/shop/shoes'+ (Number(id) + 1) +'.jpg'} width="100%" />
                     </div>
                     <div className="col-md-6">
-                        <h4 className="pt-5">상품명</h4>
-                        <p>상품설명</p>
-                        <p>120000원</p>
+                        <h4 className="pt-5">{props.data[id].title}</h4>
+                        <p>{props.data[id].content}</p>
+                        <p>{props.data[id].price}</p>
                         <button className="btn btn-danger">주문하기</button>
                     </div>
                 </div>

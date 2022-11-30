@@ -119,6 +119,271 @@ App() {
 <img src={'https://www.howard.com'+ (데이터 + 1) +'} />
 ```
 
+<br><br>
+## 여러가지 페이지 만들기 (라우터)
+- 페이지를 구분하는것을 일명 라우팅이라고 그럼
+
+- 일반적인 html 로 만들어진 프로젝트와 다름
+- 리액트는 싱글페이지라서 html 파일이 하나밖에 없음.
+- 리액트에서 여러 페이지 만드는법
+  1. 컴포넌트를 만들어서 상세페이지 내용 채움
+  2. 누가 상세페이지로 접속하면 그 컴포넌트를 보여줌.
+  3. 해당 내용을 직접 만들어도 되지만, 아주 길어지기 때문에 주로 라이브러리를 사용함
+     <br><br>
+
+  - react-router-dom (리액트 프로젝트 여러페이지 쉽게 보여주는 라이브러리)
+    - npm install react-router-dom@6 명령어를 입력
+    - 라이브러리를 사용하기 위해 index.js 에 임포트를 하고 추가해야될 내용이 있음
+      1. 상단에 BrowserRouter 를 임포트 해준다
+      2. 하단에 <App/> 태그를 BrowserRouter 태그로 감싸준다.
+    ```
+      import React from 'react';
+      import ReactDOM from 'react-dom/client';
+      import './index.css';
+      import App from './App';
+      import reportWebVitals from './reportWebVitals';
+      import { BrowserRouter } from "react-router-dom"
+  
+      const root = ReactDOM.createRoot(document.getElementById('root'));
+      root.render(
+        <React.StrictMode>
+         <BrowserRouter>
+           <App />
+         </BrowserRouter>
+        </React.StrictMode>
+    );
+    ```
+    - 그리고 App.js 에도 부트스트랩때와 마찬가지로 몇가지 컴포넌트들을 임포트 해워야 된다. 
+    ```
+      import { Routes, Route, Link } from 'react-router-dom'
+    ```
+
+- 사용법은 react-router-dom6 홈페이지에서 상세하게 찾아볼것. 우선 뭐 기본 사용법만 기록하겠음. 
+<br><br>
+
+#### react-router-dom6 간단 사용법들
+- App.js 에 부트스트래버럼 몇가지 임포트를 해준다.
+```
+import { Routes, Route, Link } from 'react-router-dom'
+```
+- html 작성하는 곳에 Routes,Route 태그를 넣어준다.
+- Route 는 추가할 페이지? 개수만큼 넣어주면 된다. 
+```
+  return(
+    <div>
+        <Routes>
+            <Route path="/detail" element={보여줄 페이지 내용 } />
+            <Route />
+        </Routes> 
+    </div>
+  )
+
+```
+  - path 는 url 뒤에 붙을 경로를 의미함
+  - element= {} 는 중괄호 내에, 해당 경로에서 어떤 페이지를 보여줄것인지를 넣어주면 됨. 
+  - 메인 페이지의 경로는 path="/" 슬레시 하나만 넣어주면 된다.
+  - 아래는 기본 Route 쓰는 방법임 
+```
+function App() {
+    let [shoes, shoesSet] = useState(data);
+
+    return (
+        <>
+            <Navbar bg="dark" variant="dark">
+                <Container>
+                    <Navbar.Brand href="#home">리액트 샵</Navbar.Brand>
+                    <Nav className="me-auto">
+                        <Nav.Link href="#home">메인</Nav.Link>
+                        <Nav.Link href="#features">장바구니</Nav.Link>
+                        <Nav.Link href="#pricing">정보</Nav.Link>
+                    </Nav>
+                </Container>
+            </Navbar>
+
+            <Routes>
+                <Route path="/" element={
+                    <>
+                        <div className={"main-bg"}></div>
+                        <div className="container">
+                            <div className="row">
+                                {
+                                    shoes.map(function(item,index){
+                                        return(
+                                            <ItemList data = {shoes} index = {index} key={index}/>
+                                        )
+                                    })
+                                }
+                            </div>
+                        </div>
+                    </>
+                }/>
+                <Route path="/detail" element={<div>상세페이지 내용 넣기</div>}/>
+                <Route path="/cart" element={<div>장바구니페이지</div>}/>
+            </Routes>
+
+
+        </>
+    );
+}
+```
+
+  - 단 이렇게 만들경우에 단점이 한눈에 구조를 알아보기 어려우니까, 페이지별로 컴포넌트를 만들어버리면 라우터 태그 내에
+  그냥 컴포넌트만 집어넣으면 되서 관리하기가 용이해진다. 
+
+- 버튼 클릭시 라우터 변경하는법
+  - Link 태그를 사용해서 a 태그처럼 사용하면 된다
+  - Link 태그는 대문자 시작임
+  - to 안에 붙이고싶은 경로를 넣어주면 된다. Route 태그에 적은 path 경로. 
+  ```
+    <Link to="/">메인</Link>
+    <Link to="/detail">상세페이지</Link>
+    <Link to="/cart">장바구니</Link>
+  ```
+<br><br>
+
+- useNavigate, Outlet (라우터 컴포넌트)
+
+- useNavigate 훅
+  - use 어쩌구 저쩌구 하는것들을 훅이라고 하는데 유용한 함수들이 들어있는 컴포넌트들이다.
+  - 변수에 담아서 사용하면 된다.
+  ```
+    let navigate = useNavigate();
+  ```
+  - useNavigate 는 페이지 이동을 도와주는 함수이다. 
+  - 위에서 Link 태그를 썼는데 저렇게 안해도 됨. 
+  - 페이지 이동 시킬 요소에다가 onClick 으로 넣어주면 된다.
+- ```
+    <Nav.Link onClick{() => { navigate('/detail' } }>상품상세페이지 이동</Nav.Link>
+  ```
+  - 네비게이트 함수에 히스토리백이랑 앞전페이지 이동기능도 있음
+  - 파라미터에 1을 넣으면 앞에페이지, -1을 넣으면 이전페이지 이동함
+  ```
+    <Nav.Link onClick{() => { navigate(-1) } }>이전페이지</Nav.Link>
+  ```
+<br><br>
+
+- 404 페이지 만들기 
+  - 이건 라우터태그 경로에 * 을 넣어주면, 라우터로 지정된 모든 경로외에 다른 경로로 들어오면 띄워주는 페이지를 만들 수 있음
+    ```
+    <Route path="*" element={<div>404페이지 입니다.</div>}/>
+    ```
+<br><br>
+
+- Nested Routes
+  - 여러개 유사한 페이지가 필요할때  
+  - 특정 페이지에 속한 하위 페이지들을 만드는 문법이다.
+  - 예를들어 detail 중에서도 특정한것들을 보여줄 페이지, detail/more 이나 detail/price 등 detail 의 하위 페이지들을 추가할떄 사용함
+  ```
+    <Route path="/detail" element={<div>상품상세페이지</div>}>
+      <Route path="more" element={<div>상세에서 더 상세</div>} />
+      <Route path="price" element={<div>상세에서 가격상세페이지</div>} />
+    </Route>
+  ```
+
+  - Nested는, 부모 페이지와 자식페이지 둘다 보여줌
+  - Nested 를 사용할때는, 부모되는 Route에 자식되는 Route 들을 어디에서 보여줄지를 작성해주어야 한다.
+  - 이때 사용하는게 Outlet 임.
+  ```
+    <Route path="/detail" element={
+      <div>상품상세페이지</div>
+      <Outlet></Outlet>
+    }>
+      <Route path="more" element={<div>상세에서 더 상세</div>} />
+      <Route path="price" element={<div>상세에서 가격상세페이지</div>} />
+    </Route>
+  ```
+
+**_이걸 왜 쓰느냐(Nested Routes)_**
+1. 해당 방법을 통해 여러가지 UI 를 제작할 수 있음(탭이나 뭐 기타등등)
+2. 전체 큰 틀은 그대로 보여주면서 내부에 작은 부분들만 변경할 수 있음. 마치 탭기능처럼 근데 이걸 뭐 버튼눌리면 이거보여주고 저거눌리면 저거보여주고 이렇게 만드는거지
+
+
+
+
+
+<br><br>
+
+#### src 폴더 내에 폴더 구조
+- src 폴더 내에 그냥 폴더를 만들어서 묶어두면 된다. 
+
+
+<br><br>
+
+## Routes 로 수십개 페이지 보여주기
+
+- 예를들어 상품목록 > 상품 상세페이지로 들어가야되는데, 이게 수십개다. 그럼 어떤 문법을 써야하는지
+- URL 파라미터문법을 써야한다.
+  - URL 파라미터는 여러개 사용가능함 /detail/:id/text/:id
+- Route 의 패스 경로 뒤에 :작명 을 넣어준다.
+<br><br>
+
+1. 메인 페이지(App.js), 즉 컴포넌트를 불러와서 보여주는 페이지에서 라우트 url 에 추가 경로를 넣어준다.
+2. 컴포넌트 페이지로 가서, useParams() 함수를 사용해준다. 
+
+
+```
+ <Route path="/detail/:작명" element={<Detail data={shoes}></Detail>}/>
+```
+
+<br><br>
+
+## useState 관련
+- 메인 페이지에서 사용하는 useState 를 컴포넌트 페이지에서 사용하려면, props 를 통해서 가져오는게 편하다. 물론 컴포넌트 페이지에 따로 메인 페이지에 적용된 데이터를 한번더 변수에 담아서 써도 되지만, 그렇게 되면 데이터 변경을 페이지마다 해줘야 하기 때문에 props로 불러와서 처리하는게 좋다.
+
+<br><br>
+
+## Styled-components 라이브러리 
+
+- npm install styled-components 로 설치 가능
+- 쓰고자 하는 파일에 import styled from 'styled-components' 넣어준다. 
+- 변수에다가 저장해서 쓰면됨.
+- 백틱을 써야됨
+- 하나의 스타일 된 요소 컴포넌트를 만든다고 생각하면 된다. 
+- 장점
+  1. 다른 파일에는 간섭안함. 해당 페이지에서만 쓰는 스타일이 됨 
+  2. CSS 파일까지 왔다갔다 안해도 된다..
+  3. 로딩시간 단축
+```
+let YellowBtn= styled.button`
+      background : yellow;
+      color: black;
+      padding: 10px;
+    `
+    
+function Detail() {
+  return (
+    <YellowBtn></YellowBtn>
+  )
+ }
+```
+- 그리고 props 문법으로, 비슷한 컴포넌트들을 조금씨 다르게 쓸 수 있음
+```
+let YellowBtn= styled.button`
+      background : ${ props => props.bg};
+      color: ${ props => props.bg == 'blue' ? 'white' : 'black'};
+      padding: 10px;
+    `
+    
+function Detail() {
+  return (
+    <YellowBtn bg="blue"></YellowBtn>
+  )
+ }
+```
+- 위의 방법으로 음음 됨 
+- 자바스크립트의 문법같은것도 사용할 수 있음. 만약 배경이 파란색이면 컬러는 화이트, 아니면 블랙 이런식으로 
+- 단점
+  1. 스타일 재사용이 어렵다.(import, export 로 쓸수있으나 굳이 그럴거면 css 파일쓰면됨)
+  2. 협업시 다른사람이 이해하기 힘들 수 있다.
+  3. 
+
+<br><br>
+- 부가적으로 한 파일에만 종속되는 css 파일을 만들고싶으면 파일명.module.css 로 CSS파일을 만들면 된다. 파일명은 종속시키고 싶은 js 파일의 이름임
+
+
+
+
+
 
 
 

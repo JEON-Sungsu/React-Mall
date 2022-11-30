@@ -1,18 +1,18 @@
-import data from './data'
 import {useState} from "react";
 
-function Main(){
-    let [shoes, shoesSet] = useState(data);
+function Main(props){
 
     return (
         <>
-            <div className={"main-bg"}></div>
+            <div className={'filterWrap'}>
+                <button type={"button"} onClick={()=>{props.sorting()}} className={"btn btn-dark"}>이름순 정렬</button>
+            </div>
             <div className="container">
                 <div className="row">
                     {
-                        shoes.map(function(item,index){
+                        props.data.map(function(item,index){
                             return(
-                                <ItemList data = {shoes} index = {index} key={index}/>
+                                <ItemList data = {props.data} index = {index} key={index}/>
                             )
                         })
                     }

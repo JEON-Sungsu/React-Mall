@@ -232,3 +232,15 @@ body {
     background: url("./images/mainBg.png") center no-repeat;
     background-size: cover;
 }
+
+.me-auto a {
+    color:#fff;
+    padding: 10px;
+    text-decoration: none;
+}
+
+.filterWrap {
+    padding: 12px 24px;
+    display:flex;
+    justify-content: flex-end;
+}
