@@ -26,7 +26,7 @@ function ItemList(props) {
     return (
 
         <div className={"col-lg-4"}>
-            <img src={'https://codingapple1.github.io/shop/shoes' + (props.index + 1) + '.jpg'}
+            <img src={'https://codingapple1.github.io/shop/shoes' + (props.data[props.index].id + 1) + '.jpg'}
                  style={{width: '80%', height: '80%'}}/>
             <h4>{props.data[props.index].title}</h4>
             <p>{props.data[props.index].price}</p>

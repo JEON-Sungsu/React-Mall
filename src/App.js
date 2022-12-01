@@ -22,7 +22,7 @@ function App() {
     }
 
     return (
-        <>
+        <>      
             <Navbar bg="dark" variant="dark">
                 <Container>
                     <Navbar.Brand href="#home">리액트 샵</Navbar.Brand>
@@ -33,7 +33,7 @@ function App() {
                         <Nav.Link onClick={()=>{navigate('/event') }}>이벤트</Nav.Link>
                     </Nav>
                 </Container>
-            </Navbar>
+            </Navbar>   
             <div className={"main-bg"}></div>
 
             <Routes>

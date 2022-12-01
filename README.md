@@ -380,6 +380,35 @@ function Detail() {
 <br><br>
 - 부가적으로 한 파일에만 종속되는 css 파일을 만들고싶으면 파일명.module.css 로 CSS파일을 만들면 된다. 파일명은 종속시키고 싶은 js 파일의 이름임
 
+<br><br>
+
+## LifeCycle & useEffect 
+- 컴포넌트의 lifeCycle 
+    - 컴포넌트는 장착되기도 하고(mount), 업데이트도 되고(update), 필요없으면 제거(unmount)가 되기도 하는데, 이거를 라이프사이클이라고 부름 ㅋ
+    - 이거를 왜 배우냐면, 내가 이 과정이 일어나는 중간중간에 간섭을 할 수 있기 때문이다.
+    - 간섭이라고 하면 그냥 코드 실행임. 이벤트 발생과 비슷한 느낌임
+    <br><br>
+- 컴포넌트 작성 함수 내에 useEffect 함수를 써주면 된다.
+    1. 먼저 import { useEffect } from "react"; 임포트를 해준다. 그냥 함수를 쓰면 자동으로 해주긴 함
+    ```
+    function Detail(){
+
+        useEffect(() => {
+            mount,update 될 때 실행시킬 함수
+        })
+
+        return (
+
+        )
+    }
+    ```
+<br><br>
+
+- useEffect 를 쓰는 이유
+    - 화면이 모두 rendering 이 된 이후에 실행시켜준다.
+    - 사실 그냥 리턴 위에다가 함수 작성해도 되는데, 시점이 안맞을 수 있음. 
+    - 서버에서 데이터를 가져오거나, 연산이 복잡한 함수를 사용할때, 또는 타이머를 쓸 때 useEffect 안에 작성해준다. 
+
 
 
 

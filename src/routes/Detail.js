@@ -1,9 +1,13 @@
-import data from '../data'
-import {useState} from "react";
+import { useEffect } from "react";
 import {useParams} from "react-router-dom";
-import styled from 'styled-components';
+import {useState} from "react";
+
 
 function Detail(props){
+
+    useEffect(()=> {
+        console.log('hi')
+    })
 
     let {id} = useParams()
     return (
