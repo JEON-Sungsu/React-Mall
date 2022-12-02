@@ -223,9 +223,9 @@ body {
     user-select: none !important;
 }
 
-/*img {*/
-/*    pointer-events: none;*/
-/*}*/
+/*img { */
+/* pointer-events: none; */
+/* } */
 
 .main-bg {
     height: 300px;
