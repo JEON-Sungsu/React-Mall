@@ -1,9 +1,17 @@
 import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { useState } from 'react';
+import { Nav, Tabs } from 'react-bootstrap';
+import { tab } from '@testing-library/user-event/dist/tab';
+import { useDispatch } from 'react-redux';
+import { changCount, addCart } from './../store';
 
 function Detail(props) {
     const [inputVal, inputValSet] = useState('');
+    let [tab, tabSet] = useState(0);
+
+    let dispatch = useDispatch();
+
     function checkVal(e) {
         if (isNaN(e.target.value) == true) {
             alert('숫자만 입력하세요');
@@ -21,9 +29,9 @@ function Detail(props) {
                         <img src={'https://codingapple1.github.io/shop/shoes' + (Number(id) + 1) + '.jpg'} width='100%' />
                     </div>
                     <div className='col-md-6'>
-                        <h4 className='pt-5'>{props.data[id].title}</h4>
-                        <p>{props.data[id].content}</p>
-                        <p>{props.data[id].price}</p>
+                        <h4 className='pt-5'>{props.shoes[id].title}</h4>
+                        <p>{props.shoes[id].content}</p>
+                        <p>{props.shoes[id].price}</p>
                         <span style={{ marginRight: '10px' }}>수량</span>
                         <input
                             onChange={e => {
@@ -34,12 +42,65 @@ function Detail(props) {
                         />
                         <br></br>
                         <br></br>
-                        <button className='btn btn-danger'>주문하기</button>
+                        <button
+                            className='btn btn-danger'
+                            onClick={() => {
+                                dispatch(addCart());
+                            }}>
+                            주문하기
+                        </button>
                     </div>
                 </div>
             </div>
+
+            <Nav variant='tabs' defaultActiveKey='tab-01'>
+                <Nav.Item>
+                    <Nav.Link
+                        onClick={() => {
+                            tabSet(0);
+                        }}
+                        eventKey='tab-01'>
+                        Option 1
+                    </Nav.Link>
+                </Nav.Item>
+                <Nav.Item>
+                    <Nav.Link
+                        onClick={() => {
+                            tabSet(1);
+                        }}
+                        eventKey='tab-02'>
+                        Option 2
+                    </Nav.Link>
+                </Nav.Item>
+                <Nav.Item>
+                    <Nav.Link
+                        onClick={() => {
+                            tabSet(2);
+                        }}
+                        eventKey='tab-03'>
+                        Option 3
+                    </Nav.Link>
+                </Nav.Item>
+            </Nav>
+
+            <TabContent tab={tab} shoes={props.shoes} />
         </>
     );
+}
+
+function TabContent(props) {
+    let [animate, setAnimate] = useState('');
+    useEffect(() => {
+        setTimeout(() => {
+            setAnimate('after');
+        }, 100);
+
+        return () => {
+            setAnimate('');
+        };
+    }, [props.tab]);
+
+    return <div className={'before ' + animate}>{[<div>{props.shoes[0].title}</div>, <div>2번탭</div>, <div>3번탭</div>][props.tab]}</div>;
 }
 
 export default Detail;

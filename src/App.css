@@ -272,3 +272,12 @@ body {
     justify-content: center;
     background: #fff;
 }
+
+.before {
+    opacity: 0;
+}
+
+.after {
+    opacity: 1;
+    transition: opacity 500ms ease-in-out;
+}

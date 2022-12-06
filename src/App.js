@@ -5,6 +5,7 @@ import products from './images/mainBg.png';
 import { useState } from 'react';
 import data from './data';
 import Detail from './routes/Detail';
+import Cart from './routes/Cart';
 import Event from './routes/Event';
 import { Routes, Route, Link, useNavigate, Outlet } from 'react-router-dom';
 import axios from 'axios';
@@ -128,8 +129,8 @@ function App() {
                         </>
                     }
                 />
-                <Route path='/detail/:id' element={<Detail data={shoes}></Detail>} />
-                <Route path='/cart' element={<div>장바구니페이지</div>} />
+                <Route path='/detail/:id' element={<Detail shoes={shoes}></Detail>} />
+                <Route path='/cart' element={<Cart></Cart>} />
                 <Route path='/event' element={<Event></Event>}>
                     <Route path={'one'} element={<p>첫 주문시 양배추즙 서비스</p>} />
                     <Route path={'two'} element={<p>생일기념 쿠폰받기</p>} />
