@@ -369,6 +369,7 @@ function App() {
 
 1. 메인 페이지(App.js), 즉 컴포넌트를 불러와서 보여주는 페이지에서 라우트 url 에 추가 경로를 넣어준다.
 2. 컴포넌트 페이지로 가서, useParams() 함수를 사용해준다.
+3. useParames 가 뭐냐면, Route 의 경로에 뒤에 :작명 부분의 작명 값을 가져오는거다. 그래서 작명부분이 0 이다 그럼 0을 가져오는거지. 그리고 유저가 뭐 www.홈페이지주소/detail/0 이런 url 로 경로에 진입을 했다면, 작명 부분은 0이 되는거다.
 
 ```
  <Route path="/detail/:작명" element={<Detail data={shoes}></Detail>}/>
@@ -618,8 +619,11 @@ function Detail(){
 
 ## Class 탈부착 하는것
 
+---
+
 -   일반적으로 리액트에선, 클래스 탈부착을 쓰지 않는다....
 -   그래서 클래스 탈부착으로 show & hide 를 구현하려면 useState 를 써서 만든다.
+-   이런식으로 변수가 true 면 해당요소 보여주고, 아니면 null 로 사라지게 해주는 껏다켰다 스위치 방식으로 UI 를 조절해야 한다.
 
 ```
 [loading,loadingSet] = useState(true)
@@ -635,3 +639,303 @@ return (
 
 )
 ```
+
+<br><br>
+
+## 탭 UI 만들기
+
+---
+
+-   react bootstrap 으로 컴포넌트 가져와서 쓰면 된다.
+-   네비게이션 바 최상단에는 defaultActiveKey 라는 속성이 있는데, 이건 기본으로 보여줄 탭을 의미한다.
+-   탭의 상태를 저장해둘 state 를 만들어준다.
+-   state 의 상태에 따라서 삼항연산자든, if 문이든 사용해서 화면을 보여준다.
+-   근데, html 내부에서는 if 문을 사용할 수 없어서 밖에다가 작성해줘야한다.
+-   그래서 그냥 컴포넌트를 만들어서, if 문으로 작성해서 사용하면 된다. 이때 if 문에 무적권 return 으로 값 넣어줘 야함...
+-   탭컨텐츠 만들때, if 문을 쓰기 귀찮으면, 보여줄 컨텐츠의 내용들을 배열로 다 만든다음에 호출하는방법도 있음
+
+```
+let [tab, tabSet] = useState(0);
+
+<button onClick=(() => { tabSet(0) })>1번</button>
+<button onClick=(() => { tabSet(1) })>2번</button>
+<button onClick=(() => { tabSet(2) })>3번</button>
+
+
+<TabContent tab={ tab }>
+
+function TabContent({tab}){
+    return (
+        [<div>첫번째 탭 내용</div>,<div>두번째 탭 내용</div>,<div>세번째 탭 내용</div>][index]
+    )
+}
+
+```
+
+<br><br>
+
+## 전환 애니메이션 주는법 (className 탈부착)
+
+-   일단 애니메이션 전후 클래스를 만든다.
+-   그래서 탭버튼을 눌릴때마다 적용될 수 있도록, 탭 컨텐츠 또는 탭컨텐츠를 감싸는 부모 wrap 에다가 클래스를 탈부착 시켜준다.
+-   탭버튼을 눌린다 == tab 이라는 state 의 변경이 일어난다.
+-   state 가 변경될때마다 클래스를 탈부착 시켜주는 코드를 짜면 된다.
+-   state 가 변경될때마다 사용하는 함수는 useEffect 임
+-   그리고 clean up 펑션을 사용할때 주의점이 있음
+    -   리액트에서 제공하는 automatic batching 이라는 기능이 있는데 이게 뭐냐면, 동일한 state 변경 함수들이 바로 직전에나 근처에 붙어있게 되면, 여러개를 합쳐서 그중에 하나만 실행시켜버리는 기능인데, 이것 때문에 텀을 두고 싶을때는 setTimeout 같은걸로 약간의 시차를 줘야 한다.
+
+<br><br>
+
+## Props 관련 팁
+
+-   컴포넌트에서 props 쓰기 귀찮으면 컴포넌트 파라미터에 중괄호를 하나 더 넣어서 컴포넌트의 속성 이름을 그대로 가져와서 넣어주면 된다.
+
+```
+<TabContent tab={ tab }>
+
+)
+}
+
+function TabContent({tab}){
+    return (
+        <div>{tab}</div>
+    )
+}
+```
+
+<br><br>
+
+## Context API
+
+-   메인에 불러온 데이터를, 컴포넌트에서 사용하기가 굉장히 까다로움. props를 쓰면 되긴 하나, 만약에 이게 10번이상을 걸러서 써야되는거라고 가정한다면?
+-   이때 props 없이 그냥 사용할 수 있는 방법이 2가지 있는데
+
+    1.  Context API (리액트 기본제공 문법)
+    2.  Redux (상태관리 뭐.. 라이브러리? 그런거)
+
+-   실무에서는 Context API 를 잘 안씀. 성능저하, 컴포넌트 재활용이 어려운 점이 있어서 그러함.
+-   그냥 그래도 이런게 있구나는 알고 지나가야함 <br><br>
+
+-   context API 쓰는법
+    1.  createContext 를 import 해준다.
+    2.  createContext()를 담은 변수를 하나 선언해준다(전역변수)
+    3.  불러올 컴포넌트를 <Context1.Provider> 로 감싸준다. 이름은 2번의 전역변수 명으로 하면 됨
+    4.  <Context1.Provider> 안에 value 속성을 넣고, 내가 사용하고자 하는 state 또는 변수들을 집어 넣어 준다.
+    5.  컴포넌트 파일에서 위에 선언한 보관함을 import 해준다. (그전에 export도 당연히 해줌)
+    6.  컴포넌트가 있는 곳에, useContext(Context1) 함수를 선언해준다. 이거는 불러올 state 보관함을 해체하겠다는 뜻임.
+    7.  이렇게 하면 props 없이 컴포넌트의 자식들도 그냥 가져다가 쓸 수 있다.
+
+```
+//메인 페이지 (App.js)
+
+import { createContext } from 'react'
+
+export let Context1 = createContext(); //state 보관함이라고 보면 된다.
+
+
+
+function App(){
+
+    let [재고,재고변경] = useState([10,11,12])
+
+    return (
+
+        <Routes>
+            <Route element={
+                <Context1.Provider value={{ 재고,shoes }}>
+                    <Components />
+
+                </Context1.Provider>
+            }>
+        </Routes>
+
+    )
+}
+
+
+
+//컴포넌트 페이지 (Components.js)
+
+import {Context1} from 'app.js'
+
+function Components(){
+    let states = useContext(Context1)
+
+    return (
+        <>
+            <div>
+                {states}
+            </div>
+        </>
+    )
+}
+
+
+```
+
+-   Context API 가 성능이슈가 되는 이유는, Context로 가져오는 state 외에, 모든 state 가 제랜더링이 되기 때문에, 성능저하가 발생할 수 있다.
+
+<br><br>
+
+## Redux 라이브러리
+
+-   다양한 곳에서 state를 사용하려면, 아무래도 최상위 페이지에 state를 선언해줘야 하는데, 컴포넌트에서 쓰려면 props 를 다 써야되니깐 귀찮아짐.
+-   그래서 이거때문에 Redux라는 라이브러리를 통해서, 그곳에 선언해주면 모든 페이지에서 state를 사용 및 관리할 수 있다.
+-   Redux 설치방법
+
+    1.  package.json dㅔ서 react 와 ㄱeact-dom 버전이 18.1.0 이상이어야 잘 됨
+    2.  터미널에서 npm install @reduxjs/toolkit react-redux 명령어로 리덕스 설치
+    3.  src 폴더 내에 store.js 파일을 만들어줌
+    4.  store.js 에 세팅해줌
+
+    ```
+    import { configureStore } from '@reduxjs/toolkit'
+
+    export default configureStore({
+         reducer: { }
+    })
+    ```
+
+    5.  index.js에 가서 <Provider store={store}> 로 App을 감싸준다. 그리고 provider 와 store.js 를 임포트 해준다.
+
+    ```
+    import { Provider } from 'react-redux';
+    import store from './store'
+
+    root.render(
+        <React.StrictMode>
+            <Provider store={store}>
+                <BrowserRouter>
+                    <App />
+                </BrowserRouter>
+            </Provider>
+        </React.StrictMode>
+    );
+    ```
+
+    6. store.js 에 createSlice 를 임포트 해주고, 함수도 호출한다.
+    7. createSlice 메소드 안에다가 사용할 state 를 object 처럼 만들어주는데, name 은 state 이름, initialState 는 스테이트 값이다. state 하나를 slice 라고 부른다.
+    8. createSlice 안에 만든 state 를 reducer 안에다가 등록을 해줘야 사용가능하다.
+    9. reducer 에 state 를 등록하는 규칙은 작명 : stateName.reducer 와 같이 써줘야 한다. reducer 는 꼭 붙여줘야함.
+
+    ```
+    //store.js
+
+    import { configureStore, createSlice } from '@reduxjs/toolkit';
+
+    let user = createSlice({
+        name : 'state 이름 작명',
+        initialState : '스테이트의 값'
+    })
+
+    export default configureStore({ reducer: {
+        user = user.reducer,
+    }, });
+
+    ```
+
+    10. 이렇게 store.js 에 만들어진 state 는 사용하고싶은 페이지로 가서 useSelector()를 사용해 불러오면 된다.
+
+    ```
+    //component.js
+
+    import { .useSelector } from "react-redux"
+
+    function Component(){
+
+        let a = useSelector((state) => {return state});
+
+        return (
+
+        )
+    }
+
+    ```
+
+    11. useSelector 를 편하게 쓰려면
+
+    ```
+    let a = useSelector((state) => {return state}); //store.js 에 있는 모든 state를 불러옴
+    let a = useSelector((state) => {return state.state이름}); //store.js의 특정 state 만 가져올수있음.
+
+    ```
+
+-   Redux를 쓴다고 모든 state 를 다 store.js 에 보관할 필요 없다. 글로벌하게 사용할 애들만 넣으면 됨. <br><br>
+
+-   State 변경하는법
+
+    1.  state 수정하는 함수 만들고,
+    2.  만든 함수를 export 해줘야함 export let { changeName, secondFunction, .... } = user.actions
+    3.  원할 때 그 함수 실행해달라고 store.js 에 요청을 해야됨.
+
+    ```
+    //store.js
+
+    import { configureStore, createSlice } from '@reduxjs/toolkit';
+
+    let user = createSlice({
+        name : 'userName',
+        initialState : 'JEON',
+        reducers : {
+            //reducers 안에는 함수를 만들 수 있음
+
+            changeName(state){
+                return 'Howard' + state
+            },
+
+            secondFunction(){
+
+            }
+        }
+    })
+
+    export let { changeName, secondFunction, .... } = user.actions
+
+    export default configureStore({ reducer: {
+        user = user.reducer,
+    }, });
+    ```
+
+    4. 변경함수 쓸 곳에 import 해주고 (store.js 에서 export 한 함수 + useDispatch from react-redux)
+    5. useDispatch() 함수도 줘야함 이건 store.js에 요청을 보내주는 함수임.
+    6. 사용할 곳에서 dispatch(changeName()); 이런식으로 함수 호출해줘야한다.
+
+    ```
+    //component.js
+
+    import { useSelector, disPatch } from "react-redux";
+    import { changeName } from "../store.js";
+
+    function Component(){
+
+    let a = useSelector((state) => {return state});
+    let dispatch = useDispatch()
+
+    return (
+        <button onClick = {() => {
+            dispatch(changeName())
+        }}>
+    )
+    }
+
+    ```
+
+    7. Redux로 object 자료나 array 자료를 변경하는법
+
+    -   object 자료 변경
+    -   reducers에 그냥 return 빼고, state 자료 불러서 일반 객체 값 변경하듯이 바꿔주면 된다.
+    -   함수의 파라미터 문법도 쓸 수 있음. 단, 파라미터를 쓸때는 파라미터 뒤에 .payload를 꼭 붙여줘야함.
+    -   참고로 파라미터에 들어간 state는 호출할때 굳이 신경쓰지 않아도 된다. state 뒤에 오는 파라미터가 첫번째 파라미터라고 생각하면 됨.
+    -   보통 파라미터를 작명할때 action 이라고 이름을 많이 지음.
+
+    ```
+    let user = createSlice({
+        name : 'userName',
+        initialState : {name : "kim", age : 30},
+        reducers : {
+            changeName(state, a){
+                state.name = a.payload
+            },
+        }
+    })
+    ```
