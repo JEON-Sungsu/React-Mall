@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { Nav, Tabs } from 'react-bootstrap';
 import { tab } from '@testing-library/user-event/dist/tab';
 import { useDispatch } from 'react-redux';
-import { changCount, addCart } from './../store';
+import { addCart } from './../store';
 
 function Detail(props) {
     const [inputVal, inputValSet] = useState('');
@@ -18,11 +18,20 @@ function Detail(props) {
         }
     }
 
-    useEffect(() => {});
-
     let { id } = useParams();
+
+    useEffect(() => {
+        let getLsData = localStorage.getItem('watched');
+        getLsData = JSON.parse(getLsData);
+        getLsData.push(id);
+        getLsData = new Set(getLsData);
+        getLsData = Array.from(getLsData);
+
+        localStorage.setItem('watched', JSON.stringify(getLsData));
+    },[]);
+
     return (
-        <>
+        <div>
             <div className='container'>
                 <div className='row'>
                     <div className='col-md-6'>
@@ -45,7 +54,7 @@ function Detail(props) {
                         <button
                             className='btn btn-danger'
                             onClick={() => {
-                                dispatch(addCart());
+                                dispatch(addCart({ id: id, name: props.shoes[id].title, count: 1 }));
                             }}>
                             주문하기
                         </button>
@@ -84,7 +93,7 @@ function Detail(props) {
             </Nav>
 
             <TabContent tab={tab} shoes={props.shoes} />
-        </>
+        </div>
     );
 }
 

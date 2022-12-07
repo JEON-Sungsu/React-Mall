@@ -370,6 +370,7 @@ function App() {
 1. 메인 페이지(App.js), 즉 컴포넌트를 불러와서 보여주는 페이지에서 라우트 url 에 추가 경로를 넣어준다.
 2. 컴포넌트 페이지로 가서, useParams() 함수를 사용해준다.
 3. useParames 가 뭐냐면, Route 의 경로에 뒤에 :작명 부분의 작명 값을 가져오는거다. 그래서 작명부분이 0 이다 그럼 0을 가져오는거지. 그리고 유저가 뭐 www.홈페이지주소/detail/0 이런 url 로 경로에 진입을 했다면, 작명 부분은 0이 되는거다.
+4. 근데 이 url 파라미터는 여러개를 쓸 수 있는데, 내가 가져오고싶은 파라미터가 여러개 있다면 let { param, param2, param3} = useParamse() 와 같이 선언해주어야 한다.
 
 ```
  <Route path="/detail/:작명" element={<Detail data={shoes}></Detail>}/>
@@ -939,3 +940,63 @@ function Components(){
         }
     })
     ```
+
+    8. dispatch 함수로 전달 가능한 파라미터는 1개밖에 없음. 그래서 뭐 여러가지 정보를 전달해야 된다면, 객체든 배열이든 형태로 파라미터를 전달해주면 된다.
+
+## LocalStorage
+
+-   최대 5MB string 만 저장 가능
+-   유저가 브라우저를 청소하지 않는 이상 반 영구적으로 남아있음
+-   Session storage 는 브라우저 종료시 데이터 날아감. 로컬 스토리지는 게속 남음
+-   자료 저장법,출력법
+
+```
+localStorage.setItem('key','value'); //데이터 추가
+localStorage.getItem('key); //데이터 출력
+localStorage.removeItem('key') //데이터 삭제
+
+```
+
+<br><br>
+
+-   데이터를 즉시 수정하는 문법은 없고, 데이터를 뽑아와서 수정한후에 다시 넣어줘야함.
+-   로컬스토리지에 array/object 저장 & 출력하려면
+    1.  arr,obj 를 JSON 형태로 변경시켜준다. 출력은 반대로 하면 된다. 뽑아서 obj로 바꿔주면됨.
+    2.  변경시킨걸 setItem 으로 넣어준다.
+
+```
+let obj = { name: 'JEON' };
+
+localStorage.setItem('data', JSON.stringify(obj)); //obj 를 JSON 으로 변환
+
+let 꺼낸거 = localStorage.getItem('data')
+JSON.parse(꺼낸거); //로컬스토리지 출력한 JSON 데이터를 obj로 만들어줌.
+
+```
+
+<br><br>
+
+-   로컬 스토리지에 배열이나, 오브젝트를 넣으려면, 처음 메인 화면 진입시가 됐던, 뭐 상품목록이 되었든 어느 순간에 로컬스토리지에 일단 비어있는 arr,obj 를 넣어 주어야 한다.
+-   이때, 보통 useEffect를 쓰게 되는데, 만약 이럴경우에 페이지가 새로고침이 되면 계속해서 localstorage에 있는 녀석에게 비어있는 arr,obj를 넣기 때문에, if 문을 사용해서 만약에 스토리지에 내가 넣고자 하는 데이터의 key 값이 null 일때(존재하지 않을때) 만 빈 오브젝트,배열을 넣도록 코드를 짜주어야 한다.
+```
+if (localStorage.getItem('key') == null) {
+    localStorage.setItem('key',JSON.stringify([]))
+} else {
+    return
+}
+```
+
+<br><br>
+
+-   배열 중복 제거 new Set(배열)
+```
+let getLsData = localStorage.getItem('watched');
+getLsData = JSON.parse(getLsData);
+getLsData.push(id);
+getLsData = new Set(getLsData);
+getLsData = Array.from(getLsData);
+
+localStorage.setItem('watched', JSON.stringify(getLsData));
+```
+
+<br><br>

@@ -2,7 +2,7 @@ import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Button, Navbar, Container, Nav } from 'react-bootstrap';
 import products from './images/mainBg.png';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import data from './data';
 import Detail from './routes/Detail';
 import Cart from './routes/Cart';
@@ -13,6 +13,14 @@ import axios from 'axios';
 let clickCount = 0;
 
 function App() {
+    useEffect(() => {
+        if (localStorage.getItem('watched') !== null) {
+            return
+        } else {
+            localStorage.setItem('watched', JSON.stringify([]));
+        }
+    }, []);
+
     let [shoes, shoesSet] = useState(data);
     let navigate = useNavigate();
     let [loading, loadingSet] = useState(false);

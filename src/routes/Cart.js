@@ -10,7 +10,7 @@ function Cart() {
     let dispatch = useDispatch();
 
     return (
-        <>
+        <div>
             <div className='container'>
                 <div className='row'>
                     <div className='col-lg-12'>
@@ -33,7 +33,7 @@ function Cart() {
                                             <td>
                                                 <button
                                                     onClick={() => {
-                                                        dispatch(changeCount(i));
+                                                        dispatch(changeCount(el.id));
                                                     }}>
                                                     +
                                                 </button>
@@ -46,7 +46,7 @@ function Cart() {
                     </div>
                 </div>
             </div>
-        </>
+        </div>
     );
 }
 
