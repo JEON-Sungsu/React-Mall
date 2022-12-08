@@ -1086,3 +1086,70 @@ ___
     -   데이터 요청 실패시 자동으로 여러번 더 호춣시도 해줌 새로고침 없어도. 
     -   state 공유를 안해도 된다.
 
+<br><br>
+
+## Lazy import 
+___
+
+-   디버깅을 수웧하게 해주는 크롬 확장프로그램중 하나 
+-   크롬 확장프로그램중에서 react developer tools 검색해서 설치하면 됨 
+    -   설치 후 도구 더보기 > 확장프로그램 > react developer tools 세부정보 > 파일 URL 에 대한 엑세스 허용 체크 해줘야됨
+
+-   이후 개발자 도구 열어서 개도구 상단 탭에서 component 활성화 시키면 컴포넌트로 구성된거 볼 수 있음 
+
+-   redux 관련된 확장프로그램도 있음 
+
+<br><br>
+
+-   Single Page Application 특징 
+    -   빌드시 js 파일 하나에 모든 코드 다 쑤셔넣음 
+    -   그래서 사이즈가 아주 커짐
+    -   그래서 lazy import 방식이란게 있음 
+    -   예를들어서 메인 페이지에 컴포넌트로 붙어있는 애들을 지금 당장에는 쓸 필요가 없으니까 굳이 당장 불러올 필요가 없음. 그래서 lazy import 를 통해서 필요할때만 불러올 수 있도록 만듬. 이 말은 결국 하나의 js 파일을 쪼개는 형태로 볼 수 있음 
+    ```
+    import { lazy } from "react"
+
+    const Detail = lazy(() => import('./routes/Detail.js'))
+    const cart = lazy(() => import('./routes/cart.js'))
+
+    ```
+    -   이렇게 하면 단점도 있긴한데, 각각의 상세 컴포넌트페이지로 이동할때, 로딩시간 발생함. 
+    -   그래서 이렇게 페이지 이동할때 뭔가를 넣고 싶다면 Suspense를 통해서 페이지간 이동시에 뭔가 보여주고 싶으면 보여줄 수 있음
+    -   내가 보여주고자하는 컴포넌트 하나에만 Suspens 로 감싸도 되고, 아니면 전체를 감싸도 됨. 어차피 저거니깐 그냥 보통은 전체를 감싼다고 함.
+    -   Suspens 에 fallback 이라는 속성을 통해서 화면전환시 보여주고싶은 그걸 넣으면 된다. 
+    -   보통 로딩 스피너, 로딩바 등등을 넣는다고 함
+
+    ```
+    import { Suspens } from "react"
+
+    <Suspens fallback={화면이 전환되는 동안에 보여줄 화면 만들면 됨.>
+        <Routes>
+            <Route />
+            <Route />
+            <Route />
+        <Routes>
+    </Suspens>
+    ```
+
+<br><br>
+
+## 재렌더링 막기 
+___
+-   부모 컴포넌트가 재렌더링 될 때 자식 컴포넌트도 재렌더링이 된다.
+-   굳이 제랜더링 될 필요가 없는 친구도 그렇게 되서 어쩌면 성능저하를 일으킬수도 있어서 이걸 막아주는것이다. 
+-   그래서 자식 컴포넌트를 만들때 memo 라는 함수를 사용해서 자식컴포넌트를 만듬
+```
+let Child = memo(function(){
+    return <div> 자식컴포넌트</div>
+})
+
+function Moter(){
+    return (
+        <div>
+            <Child></Child>
+        </div>
+    )
+}
+
+
+```

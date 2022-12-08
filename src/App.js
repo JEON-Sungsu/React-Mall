@@ -40,8 +40,6 @@ function App() {
                         return a.data
                     })
                 })
-
-    console.log(result.data)
     return (
         <>
             <Navbar bg='dark' variant='dark'>
