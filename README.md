@@ -1153,3 +1153,51 @@ function Moter(){
 
 
 ```
+-   memo의 원리는, 자식요소의 props가 변할때만 재렌더링을 해줌. 
+-   근데 만약 props 가 길고 복잡하다면, 오히려 이걸 비교하느라 성능저하가 일어날수있기 때문에 잘안씀 
+
+<br><br>
+
+-   useMemo 사용법
+-   연산이 아주 긴 어떤 함수나 반복문을 사용할때 사용함 
+-   useEffect와 사용법이 아주 유사하다. 
+-   컴포넌트 렌더링시 딱 1번만 실행됨 
+-   useMemo 는 렌더링 될 때 실행하고, useEffect는 렌더링이 끝나고 실행되는 차이가 있음. 
+
+<br><br>
+
+## useTransition
+___
+-   동작이 느린 컴포넌트 성능향상 가능 (예를들어 막 수십만개 div 생성해야될때)
+```
+import { useTransition } from "react";
+
+function App(){
+    let [isPending, startTransition] = useTransiion()
+
+    return (
+        <div>
+            <input onChange={()=>{
+                startTransition(() => {
+
+                })
+            }}>
+        </div>
+    )
+}
+
+```
+-   어떤, 성능저하를 일으키는 함수(보통 state 변경함수)를 startTransition 함수의 콜백함수안에 넣어주면 된다. 
+-   useTransition 을 선언해준 곳에 isPending 은, startTransition 함수가 감싼 콜백함수가 뭔가 작동을 하고 있을때, true 값을 반환해준다. 그래서 시간이 오래걸리는 뭔가 작업중일때 isPending 을 통해서 뭔가를 보여줄 수 도 있고, 다른걸 실행할 수 도 있음. 
+
+-   비슷한 useDeferredValue 라는 친구도 있음 .
+-   이것도 변수에 담아서 사용하면 되는데, state 나 변수가 변경되는거를 조금 지연시켜주는 친구이다. 
+```
+let [state, setState] = useState('');
+let delay = useDeferredValue(state);
+
+이렇게 되면 state 변경함수를 어디서 사용할 때 useTransition 처럼 조금 늦게 처리해줌. 
+
+```
+<br><br>
+
