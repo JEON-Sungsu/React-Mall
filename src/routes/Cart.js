@@ -35,7 +35,7 @@ function Cart() {
                                                     onClick={() => {
                                                         dispatch(changeCount(el.id));
                                                     }}>
-                                                    +
+                                                    + 추가
                                                 </button>
                                             </td>
                                         </tr>

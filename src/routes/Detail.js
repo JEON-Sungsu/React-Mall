@@ -5,7 +5,7 @@ import { Nav, Tabs } from 'react-bootstrap';
 import { tab } from '@testing-library/user-event/dist/tab';
 import { useDispatch } from 'react-redux';
 import { addCart } from './../store';
-
+import { useNavigate } from 'react-router-dom';
 function Detail(props) {
     const [inputVal, inputValSet] = useState('');
     let [tab, tabSet] = useState(0);
@@ -19,6 +19,7 @@ function Detail(props) {
     }
 
     let { id } = useParams();
+    let navigate = useNavigate();
 
     useEffect(() => {
         let getLsData = localStorage.getItem('watched');
@@ -48,6 +49,7 @@ function Detail(props) {
                             }}
                             type={'text'}
                             id={'test'}
+                            value={'1'}
                         />
                         <br></br>
                         <br></br>
@@ -55,8 +57,9 @@ function Detail(props) {
                             className='btn btn-danger'
                             onClick={() => {
                                 dispatch(addCart({ id: id, name: props.shoes[id].title, count: 1 }));
+                                navigate('/cart')
                             }}>
-                            주문하기
+                            장바구니 추가
                         </button>
                     </div>
                 </div>

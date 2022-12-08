@@ -310,9 +310,9 @@ function App() {
 
 -   404 페이지 만들기
 
-    -   이건 라우터태그 경로에 \_ 을 넣어주면, 라우터로 지정된 모든 경로외에 다른 경로로 들어오면 띄워주는 페이지를 만들 수 있음
+    -   이건 라우터태그 경로에 * 을 넣어주면, 라우터로 지정된 모든 경로외에 다른 경로로 들어오면 띄워주는 페이지를 만들 수 있음
         ```
-        <Route path="_" element={<div>404페이지 입니다.</div>}/>
+        <Route path="*" element={<div>404페이지 입니다.</div>}/>
         ```
         <br><br>
 
@@ -676,6 +676,7 @@ function TabContent({tab}){
 <br><br>
 
 ## 전환 애니메이션 주는법 (className 탈부착)
+___
 
 -   일단 애니메이션 전후 클래스를 만든다.
 -   그래서 탭버튼을 눌릴때마다 적용될 수 있도록, 탭 컨텐츠 또는 탭컨텐츠를 감싸는 부모 wrap 에다가 클래스를 탈부착 시켜준다.
@@ -688,6 +689,7 @@ function TabContent({tab}){
 <br><br>
 
 ## Props 관련 팁
+___
 
 -   컴포넌트에서 props 쓰기 귀찮으면 컴포넌트 파라미터에 중괄호를 하나 더 넣어서 컴포넌트의 속성 이름을 그대로 가져와서 넣어주면 된다.
 
@@ -707,6 +709,7 @@ function TabContent({tab}){
 <br><br>
 
 ## Context API
+___
 
 -   메인에 불러온 데이터를, 컴포넌트에서 사용하기가 굉장히 까다로움. props를 쓰면 되긴 하나, 만약에 이게 10번이상을 걸러서 써야되는거라고 가정한다면?
 -   이때 props 없이 그냥 사용할 수 있는 방법이 2가지 있는데
@@ -779,6 +782,7 @@ function Components(){
 <br><br>
 
 ## Redux 라이브러리
+___
 
 -   다양한 곳에서 state를 사용하려면, 아무래도 최상위 페이지에 state를 선언해줘야 하는데, 컴포넌트에서 쓰려면 props 를 다 써야되니깐 귀찮아짐.
 -   그래서 이거때문에 Redux라는 라이브러리를 통해서, 그곳에 선언해주면 모든 페이지에서 state를 사용 및 관리할 수 있다.
@@ -944,6 +948,7 @@ function Components(){
     8. dispatch 함수로 전달 가능한 파라미터는 1개밖에 없음. 그래서 뭐 여러가지 정보를 전달해야 된다면, 객체든 배열이든 형태로 파라미터를 전달해주면 된다.
 
 ## LocalStorage
+___
 
 -   최대 5MB string 만 저장 가능
 -   유저가 브라우저를 청소하지 않는 이상 반 영구적으로 남아있음
@@ -1000,3 +1005,84 @@ localStorage.setItem('watched', JSON.stringify(getLsData));
 ```
 
 <br><br>
+
+## 실시간 데이터 통신 react-query
+___
+
+-   ajax 성공/실패시 html 보여주려면?
+-   몇초마다 자동으로 ajax 요청하는법
+-   통신 실패시 몇초 후 자동 재요청하는지?
+-   prefetch? -> 만약 내가 현재 보고 있는 페이지에서 잠깐 다른 탭으로 이동했다가 다시 돌아왔을때 데이터 요청을 한번더 날리는것.
+<br><br>
+
+-   해당 항목들을 쉽게 구현할 수있도록 해주는 라이브러리 React Query 이다.
+-   사실 일반적인 상황에서는 굳이 필요는 없는데, 채팅앱이나 뭐 실시간으로 업데이트를 해줘야 하는 앱,웹에서 필요한 라이브러리이다. 
+-   인기가 많은 라이브러리 이므로 그냥 배워만 두면 된다. 
+` npm install react-query `
+-   세팅 방법
+    1.  설치
+    2. index.js 세팅 
+    3. <app/>을 <QueryClientProvider clien = {queryClient}> 로 감싸준다. 
+    4.  root.render 상단에 변수 설정
+    5.  import 는 기본
+    ```
+    import {QueryClient, QueryClientProvider } from "react-query";
+
+    const queryClient = new QueryClient();
+
+    root.render(
+        <QueryClientProvider client = {queryClient}>
+            <React.StrictMode>
+                <Provider store={store}>
+                    <BrowserRouter>
+                        <App />
+                    </BrowserRouter>
+                </Provider>
+            </React.StrictMode>
+        </QueryClientProvider>
+    );
+
+    ```
+
+    6. 이제 해당 라이브러리를 사용할 페이지로 ㄱㄱ 
+    -   useQuery 사용할때는, 변수에 담아서 사용함
+    -   useQuery 메소드 첫번째 인자는 작명, 두번째 인자는 콜백함수로 씀
+    -   여기서 콜백함수는 항상 return 값으로 줘야됨.
+    ```
+    import {useQuery } from "react-query"
+
+    function App() {
+        let result = useQuery('userName', () => {
+                    return axios.get('https://codingapple1.github.io/userdata.json')
+                    .then((a) => {
+                        return a.data
+                    }),
+                    { staleTime : 2000 } //refetch 해주는 간격 설정가능
+                })
+    
+        result.data
+        result.isLoading
+        result.error
+
+        return (
+
+            { result.isLoading ? '로딩중' : result.data.name }
+            { result.error ? '에러남' : result.data.name }
+            { result.data ? result.data.name : null }
+
+        )
+    }
+
+
+
+    ```
+
+    7. useQuery 를 사용하면 장점들이 있는데
+    -   성공/실패/로딩중을 쉽게 파악할 수 있다. 
+        1.  result.data : ajax 요청이 성공했을때 true 값을 반환 
+        2.  result.isLoading : 요청이 로딩중일 때 이게 true 값을 return 함
+        3.  result.error : 요청이 실패했을 때 true 값을 return 함 
+    -   그리고 틈만 나면 자동으로 재요청 해준다. 
+    -   데이터 요청 실패시 자동으로 여러번 더 호춣시도 해줌 새로고침 없어도. 
+    -   state 공유를 안해도 된다.
+

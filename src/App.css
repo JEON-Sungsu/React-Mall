@@ -281,3 +281,7 @@ body {
     opacity: 1;
     transition: opacity 500ms ease-in-out;
 }
+
+.cursor {
+    cursor: pointer;
+}

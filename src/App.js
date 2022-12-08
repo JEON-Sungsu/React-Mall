@@ -1,7 +1,6 @@
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Button, Navbar, Container, Nav } from 'react-bootstrap';
-import products from './images/mainBg.png';
 import { useState, useEffect } from 'react';
 import data from './data';
 import Detail from './routes/Detail';
@@ -9,6 +8,7 @@ import Cart from './routes/Cart';
 import Event from './routes/Event';
 import { Routes, Route, Link, useNavigate, Outlet } from 'react-router-dom';
 import axios from 'axios';
+import { useQuery } from "react-query"
 
 let clickCount = 0;
 
@@ -32,9 +32,16 @@ function App() {
                 return a.title < b.title ? -1 : a.title > b.title ? 1 : 0;
             })
         );
-        console.log(newShoes);
     }
 
+    let result = useQuery('userName', () => {
+                    return axios.get('https://codingapple1.github.io/userdata.json')
+                    .then((a) => {
+                        return a.data
+                    })
+                })
+
+    console.log(result.data)
     return (
         <>
             <Navbar bg='dark' variant='dark'>
@@ -49,12 +56,6 @@ function App() {
                         </Nav.Link>
                         <Nav.Link
                             onClick={() => {
-                                navigate('/detail');
-                            }}>
-                            상세정보
-                        </Nav.Link>
-                        <Nav.Link
-                            onClick={() => {
                                 navigate('/cart');
                             }}>
                             장바구니
@@ -66,6 +67,7 @@ function App() {
                             이벤트
                         </Nav.Link>
                     </Nav>
+                    <Nav className='ms-auto' style={{color:'white'}} >{ result.isLoading ? '로딩중입니다.' : result.data.name }</Nav>
                 </Container>
             </Navbar>
             <div className={'main-bg'}></div>
@@ -88,7 +90,7 @@ function App() {
                             <div className='container'>
                                 <div className='row'>
                                     {shoes.map(function (item, index) {
-                                        return <ItemList data={shoes} index={index} key={index} />;
+                                        return <ItemList item={item} data={shoes} index={index} key={index} navigate={navigate} />;
                                     })}
                                 </div>
                             </div>
@@ -121,8 +123,8 @@ function App() {
                                             });
 
                                             shoesSet(moreList);
+                                            console.log(shoes)
                                             loadingSet(false);
-                                            console.log(loading);
                                         })
                                         .catch(() => {
                                             console.log('통신실패');
@@ -151,9 +153,9 @@ function App() {
 
 function ItemList(props) {
     return (
-        <div className={'col-lg-4'} style={{ marginBottom: '32px' }}>
-            <img src={'https://codingapple1.github.io/shop/shoes' + (props.index + 1) + '.jpg'} style={{ width: '80%', height: '80%' }} />
-            <h4>{props.data[props.index].title}</h4>
+        <div className={'col-lg-4 cursor'} onClick={()=> {props.navigate('/detail/'+ props.item.id +'')}} style={{ marginBottom: '32px' }}>
+            <img src={'https://codingapple1.github.io/shop/shoes' + (props.item.id + 1) + '.jpg'} style={{ width: '80%', height: '80%' }} alt="상품 이미지" />
+            <h4 >{props.data[props.index].title}</h4>
             <p>{props.data[props.index].price}</p>
         </div>
     );
