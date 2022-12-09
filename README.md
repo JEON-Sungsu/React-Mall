@@ -310,7 +310,7 @@ function App() {
 
 -   404 페이지 만들기
 
-    -   이건 라우터태그 경로에 * 을 넣어주면, 라우터로 지정된 모든 경로외에 다른 경로로 들어오면 띄워주는 페이지를 만들 수 있음
+    -   이건 라우터태그 경로에 \* 을 넣어주면, 라우터로 지정된 모든 경로외에 다른 경로로 들어오면 띄워주는 페이지를 만들 수 있음
         ```
         <Route path="*" element={<div>404페이지 입니다.</div>}/>
         ```
@@ -676,7 +676,8 @@ function TabContent({tab}){
 <br><br>
 
 ## 전환 애니메이션 주는법 (className 탈부착)
-___
+
+---
 
 -   일단 애니메이션 전후 클래스를 만든다.
 -   그래서 탭버튼을 눌릴때마다 적용될 수 있도록, 탭 컨텐츠 또는 탭컨텐츠를 감싸는 부모 wrap 에다가 클래스를 탈부착 시켜준다.
@@ -689,7 +690,8 @@ ___
 <br><br>
 
 ## Props 관련 팁
-___
+
+---
 
 -   컴포넌트에서 props 쓰기 귀찮으면 컴포넌트 파라미터에 중괄호를 하나 더 넣어서 컴포넌트의 속성 이름을 그대로 가져와서 넣어주면 된다.
 
@@ -709,7 +711,8 @@ function TabContent({tab}){
 <br><br>
 
 ## Context API
-___
+
+---
 
 -   메인에 불러온 데이터를, 컴포넌트에서 사용하기가 굉장히 까다로움. props를 쓰면 되긴 하나, 만약에 이게 10번이상을 걸러서 써야되는거라고 가정한다면?
 -   이때 props 없이 그냥 사용할 수 있는 방법이 2가지 있는데
@@ -782,7 +785,8 @@ function Components(){
 <br><br>
 
 ## Redux 라이브러리
-___
+
+---
 
 -   다양한 곳에서 state를 사용하려면, 아무래도 최상위 페이지에 state를 선언해줘야 하는데, 컴포넌트에서 쓰려면 props 를 다 써야되니깐 귀찮아짐.
 -   그래서 이거때문에 Redux라는 라이브러리를 통해서, 그곳에 선언해주면 모든 페이지에서 state를 사용 및 관리할 수 있다.
@@ -948,7 +952,8 @@ ___
     8. dispatch 함수로 전달 가능한 파라미터는 1개밖에 없음. 그래서 뭐 여러가지 정보를 전달해야 된다면, 객체든 배열이든 형태로 파라미터를 전달해주면 된다.
 
 ## LocalStorage
-___
+
+---
 
 -   최대 5MB string 만 저장 가능
 -   유저가 브라우저를 청소하지 않는 이상 반 영구적으로 남아있음
@@ -983,6 +988,7 @@ JSON.parse(꺼낸거); //로컬스토리지 출력한 JSON 데이터를 obj로 �
 
 -   로컬 스토리지에 배열이나, 오브젝트를 넣으려면, 처음 메인 화면 진입시가 됐던, 뭐 상품목록이 되었든 어느 순간에 로컬스토리지에 일단 비어있는 arr,obj 를 넣어 주어야 한다.
 -   이때, 보통 useEffect를 쓰게 되는데, 만약 이럴경우에 페이지가 새로고침이 되면 계속해서 localstorage에 있는 녀석에게 비어있는 arr,obj를 넣기 때문에, if 문을 사용해서 만약에 스토리지에 내가 넣고자 하는 데이터의 key 값이 null 일때(존재하지 않을때) 만 빈 오브젝트,배열을 넣도록 코드를 짜주어야 한다.
+
 ```
 if (localStorage.getItem('key') == null) {
     localStorage.setItem('key',JSON.stringify([]))
@@ -994,6 +1000,7 @@ if (localStorage.getItem('key') == null) {
 <br><br>
 
 -   배열 중복 제거 new Set(배열)
+
 ```
 let getLsData = localStorage.getItem('watched');
 getLsData = JSON.parse(getLsData);
@@ -1007,24 +1014,27 @@ localStorage.setItem('watched', JSON.stringify(getLsData));
 <br><br>
 
 ## 실시간 데이터 통신 react-query
-___
+
+---
 
 -   ajax 성공/실패시 html 보여주려면?
 -   몇초마다 자동으로 ajax 요청하는법
 -   통신 실패시 몇초 후 자동 재요청하는지?
 -   prefetch? -> 만약 내가 현재 보고 있는 페이지에서 잠깐 다른 탭으로 이동했다가 다시 돌아왔을때 데이터 요청을 한번더 날리는것.
-<br><br>
+    <br><br>
 
 -   해당 항목들을 쉽게 구현할 수있도록 해주는 라이브러리 React Query 이다.
--   사실 일반적인 상황에서는 굳이 필요는 없는데, 채팅앱이나 뭐 실시간으로 업데이트를 해줘야 하는 앱,웹에서 필요한 라이브러리이다. 
--   인기가 많은 라이브러리 이므로 그냥 배워만 두면 된다. 
-` npm install react-query `
+-   사실 일반적인 상황에서는 굳이 필요는 없는데, 채팅앱이나 뭐 실시간으로 업데이트를 해줘야 하는 앱,웹에서 필요한 라이브러리이다.
+-   인기가 많은 라이브러리 이므로 그냥 배워만 두면 된다.
+    `npm install react-query`
 -   세팅 방법
+
     1.  설치
-    2. index.js 세팅 
-    3. <app/>을 <QueryClientProvider clien = {queryClient}> 로 감싸준다. 
+    2.  index.js 세팅
+    3.  <app/>을 <QueryClientProvider clien = {queryClient}> 로 감싸준다.
     4.  root.render 상단에 변수 설정
     5.  import 는 기본
+
     ```
     import {QueryClient, QueryClientProvider } from "react-query";
 
@@ -1044,10 +1054,12 @@ ___
 
     ```
 
-    6. 이제 해당 라이브러리를 사용할 페이지로 ㄱㄱ 
+    6. 이제 해당 라이브러리를 사용할 페이지로 ㄱㄱ
+
     -   useQuery 사용할때는, 변수에 담아서 사용함
     -   useQuery 메소드 첫번째 인자는 작명, 두번째 인자는 콜백함수로 씀
     -   여기서 콜백함수는 항상 return 값으로 줘야됨.
+
     ```
     import {useQuery } from "react-query"
 
@@ -1059,7 +1071,7 @@ ___
                     }),
                     { staleTime : 2000 } //refetch 해주는 간격 설정가능
                 })
-    
+
         result.data
         result.isLoading
         result.error
@@ -1078,34 +1090,39 @@ ___
     ```
 
     7. useQuery 를 사용하면 장점들이 있는데
-    -   성공/실패/로딩중을 쉽게 파악할 수 있다. 
-        1.  result.data : ajax 요청이 성공했을때 true 값을 반환 
+
+    -   성공/실패/로딩중을 쉽게 파악할 수 있다.
+        1.  result.data : ajax 요청이 성공했을때 true 값을 반환
         2.  result.isLoading : 요청이 로딩중일 때 이게 true 값을 return 함
-        3.  result.error : 요청이 실패했을 때 true 값을 return 함 
-    -   그리고 틈만 나면 자동으로 재요청 해준다. 
-    -   데이터 요청 실패시 자동으로 여러번 더 호춣시도 해줌 새로고침 없어도. 
+        3.  result.error : 요청이 실패했을 때 true 값을 return 함
+    -   그리고 틈만 나면 자동으로 재요청 해준다.
+    -   데이터 요청 실패시 자동으로 여러번 더 호춣시도 해줌 새로고침 없어도.
     -   state 공유를 안해도 된다.
 
 <br><br>
 
-## Lazy import 
-___
+## Lazy import
 
--   디버깅을 수웧하게 해주는 크롬 확장프로그램중 하나 
--   크롬 확장프로그램중에서 react developer tools 검색해서 설치하면 됨 
+---
+
+-   디버깅을 수웧하게 해주는 크롬 확장프로그램중 하나
+-   크롬 확장프로그램중에서 react developer tools 검색해서 설치하면 됨
+
     -   설치 후 도구 더보기 > 확장프로그램 > react developer tools 세부정보 > 파일 URL 에 대한 엑세스 허용 체크 해줘야됨
 
--   이후 개발자 도구 열어서 개도구 상단 탭에서 component 활성화 시키면 컴포넌트로 구성된거 볼 수 있음 
+-   이후 개발자 도구 열어서 개도구 상단 탭에서 component 활성화 시키면 컴포넌트로 구성된거 볼 수 있음
 
--   redux 관련된 확장프로그램도 있음 
+-   redux 관련된 확장프로그램도 있음
 
 <br><br>
 
--   Single Page Application 특징 
-    -   빌드시 js 파일 하나에 모든 코드 다 쑤셔넣음 
+-   Single Page Application 특징
+
+    -   빌드시 js 파일 하나에 모든 코드 다 쑤셔넣음
     -   그래서 사이즈가 아주 커짐
-    -   그래서 lazy import 방식이란게 있음 
-    -   예를들어서 메인 페이지에 컴포넌트로 붙어있는 애들을 지금 당장에는 쓸 필요가 없으니까 굳이 당장 불러올 필요가 없음. 그래서 lazy import 를 통해서 필요할때만 불러올 수 있도록 만듬. 이 말은 결국 하나의 js 파일을 쪼개는 형태로 볼 수 있음 
+    -   그래서 lazy import 방식이란게 있음
+    -   예를들어서 메인 페이지에 컴포넌트로 붙어있는 애들을 지금 당장에는 쓸 필요가 없으니까 굳이 당장 불러올 필요가 없음. 그래서 lazy import 를 통해서 필요할때만 불러올 수 있도록 만듬. 이 말은 결국 하나의 js 파일을 쪼개는 형태로 볼 수 있음
+
     ```
     import { lazy } from "react"
 
@@ -1113,10 +1130,11 @@ ___
     const cart = lazy(() => import('./routes/cart.js'))
 
     ```
-    -   이렇게 하면 단점도 있긴한데, 각각의 상세 컴포넌트페이지로 이동할때, 로딩시간 발생함. 
+
+    -   이렇게 하면 단점도 있긴한데, 각각의 상세 컴포넌트페이지로 이동할때, 로딩시간 발생함.
     -   그래서 이렇게 페이지 이동할때 뭔가를 넣고 싶다면 Suspense를 통해서 페이지간 이동시에 뭔가 보여주고 싶으면 보여줄 수 있음
     -   내가 보여주고자하는 컴포넌트 하나에만 Suspens 로 감싸도 되고, 아니면 전체를 감싸도 됨. 어차피 저거니깐 그냥 보통은 전체를 감싼다고 함.
-    -   Suspens 에 fallback 이라는 속성을 통해서 화면전환시 보여주고싶은 그걸 넣으면 된다. 
+    -   Suspens 에 fallback 이라는 속성을 통해서 화면전환시 보여주고싶은 그걸 넣으면 된다.
     -   보통 로딩 스피너, 로딩바 등등을 넣는다고 함
 
     ```
@@ -1133,11 +1151,14 @@ ___
 
 <br><br>
 
-## 재렌더링 막기 
-___
+## 재렌더링 막기
+
+---
+
 -   부모 컴포넌트가 재렌더링 될 때 자식 컴포넌트도 재렌더링이 된다.
--   굳이 제랜더링 될 필요가 없는 친구도 그렇게 되서 어쩌면 성능저하를 일으킬수도 있어서 이걸 막아주는것이다. 
+-   굳이 제랜더링 될 필요가 없는 친구도 그렇게 되서 어쩌면 성능저하를 일으킬수도 있어서 이걸 막아주는것이다.
 -   그래서 자식 컴포넌트를 만들때 memo 라는 함수를 사용해서 자식컴포넌트를 만듬
+
 ```
 let Child = memo(function(){
     return <div> 자식컴포넌트</div>
@@ -1153,22 +1174,26 @@ function Moter(){
 
 
 ```
--   memo의 원리는, 자식요소의 props가 변할때만 재렌더링을 해줌. 
--   근데 만약 props 가 길고 복잡하다면, 오히려 이걸 비교하느라 성능저하가 일어날수있기 때문에 잘안씀 
+
+-   memo의 원리는, 자식요소의 props가 변할때만 재렌더링을 해줌.
+-   근데 만약 props 가 길고 복잡하다면, 오히려 이걸 비교하느라 성능저하가 일어날수있기 때문에 잘안씀
 
 <br><br>
 
 -   useMemo 사용법
--   연산이 아주 긴 어떤 함수나 반복문을 사용할때 사용함 
--   useEffect와 사용법이 아주 유사하다. 
--   컴포넌트 렌더링시 딱 1번만 실행됨 
--   useMemo 는 렌더링 될 때 실행하고, useEffect는 렌더링이 끝나고 실행되는 차이가 있음. 
+-   연산이 아주 긴 어떤 함수나 반복문을 사용할때 사용함
+-   useEffect와 사용법이 아주 유사하다.
+-   컴포넌트 렌더링시 딱 1번만 실행됨
+-   useMemo 는 렌더링 될 때 실행하고, useEffect는 렌더링이 끝나고 실행되는 차이가 있음.
 
 <br><br>
 
 ## useTransition
-___
+
+---
+
 -   동작이 느린 컴포넌트 성능향상 가능 (예를들어 막 수십만개 div 생성해야될때)
+
 ```
 import { useTransition } from "react";
 
@@ -1187,17 +1212,146 @@ function App(){
 }
 
 ```
--   어떤, 성능저하를 일으키는 함수(보통 state 변경함수)를 startTransition 함수의 콜백함수안에 넣어주면 된다. 
--   useTransition 을 선언해준 곳에 isPending 은, startTransition 함수가 감싼 콜백함수가 뭔가 작동을 하고 있을때, true 값을 반환해준다. 그래서 시간이 오래걸리는 뭔가 작업중일때 isPending 을 통해서 뭔가를 보여줄 수 도 있고, 다른걸 실행할 수 도 있음. 
+
+-   어떤, 성능저하를 일으키는 함수(보통 state 변경함수)를 startTransition 함수의 콜백함수안에 넣어주면 된다.
+-   useTransition 을 선언해준 곳에 isPending 은, startTransition 함수가 감싼 콜백함수가 뭔가 작동을 하고 있을때, true 값을 반환해준다. 그래서 시간이 오래걸리는 뭔가 작업중일때 isPending 을 통해서 뭔가를 보여줄 수 도 있고, 다른걸 실행할 수 도 있음.
 
 -   비슷한 useDeferredValue 라는 친구도 있음 .
--   이것도 변수에 담아서 사용하면 되는데, state 나 변수가 변경되는거를 조금 지연시켜주는 친구이다. 
+-   이것도 변수에 담아서 사용하면 되는데, state 나 변수가 변경되는거를 조금 지연시켜주는 친구이다.
+
 ```
 let [state, setState] = useState('');
 let delay = useDeferredValue(state);
 
-이렇게 되면 state 변경함수를 어디서 사용할 때 useTransition 처럼 조금 늦게 처리해줌. 
+이렇게 되면 state 변경함수를 어디서 사용할 때 useTransition 처럼 조금 늦게 처리해줌.
 
 ```
+
 <br><br>
 
+## PWA 셋팅 (앱으로 배포하기)
+
+---
+
+-   사용자들에게 웹사이트를 앱처럼 보이게 해주는 기술.. 사기 임
+-   실제 모바일 앱에 비해 설치 비용이 저렴함
+-   html css js 만으로 앱까지~
+-   푸쉬알림, 센서등 기능들을 많이 쓸 수 있음.
+-   설치과정이 조금 이질적임.
+
+1.  PWA가 세팅된 리액트 프로젝트를 생성해야됨
+2.  npx create-react-app 프조게트명 --template cra-template-pwa 명령어로 최초에 프로젝트를 시작해야됨
+3.  기존 프로젝트에는 PWA를 추가할 수 없음. 그래서 다시 만들고 기존 코드를 복붙하면 됨.
+4.  PWA 세팅
+    -   public 폴더 안에 manifest.json 파일이 있음. 이건 앱 설정파일이고, 앱에 대한 외부적인것들을 세팅할 수 있음.
+    -   그리고 src 파일에는 service-worker.js 라는 파일이 자동으로 생성되는데, index.js 파일로 가서 하단에 serviceWorkerRegistration.unRegister(); 라는 함수가 있는데 이거를 뒤에 unRegister 가 아니라 register 로 변경해주어야 한다.
+    -   npm build 이후에 build 폴더가 생김.
+    -   service-worker.js 파일은 사용자가 오프라인에서도 사이트를 열 수 있게 도와줌.
+5.  이렇게 변경한 프로젝트를 확인해보려면, build 이후에 build 폴더만 별도로 호스팅 하면 된다.
+6.  컴퓨터로 확인하려면 build 폴더만 따로 vscode 에서 열어서 라이브서버로 열면 크롬 상단에 설치 버튼도 있고 여튼 바로 확인할 수 있음. 구글에 검색해보면 html 로 설치버튼 얼럿 띄워주기 뭐 이런것도 있음.
+
+<br<br>
+
+## sync/async
+
+-   async란 비동기적언어 처리 방식인데, 자바스크립트는 동기적이지만 특정 코드들, 예를들어 ajax 요청이나 setTimeout 같은... 조금 시간이 걸리는 함수들은 비동기적으로 처리한다. 이말이 뭐냐면 동기적코드 들을 모두 먼저 실행시킨다음에 비동기적 코드를 실행시킨다는 의미이다. 그래서 예상치못한 에러가 발생할 수 있다.
+-   코드의 순서가 동기 - 비동기 - 동기 이렇게 있고, 나는 1번 동기를 실행시킨후 바로 비동기 코드를 실행하고 싶지만 실제 실행순서는 동기 - 동기 - 비동기 이렇게 처리가 되서 오류가 생길 수 있음
+-   마찬가지로 리액트에서도 useState 변경 함수는 비동기적으로 처리됨.
+
+```
+let [count,setCount] = useState(0);
+let [age,setAge] = useState(20);
+
+button onClick(() => {
+    setCount(set += 1)
+    if(count < 3) {
+        setAge(age += 1)
+    }
+})
+
+```
+
+-   위와 같은 식이 있는데, 나는 age를 최대 22 까지만 올리고 싶음. 그래서 버튼을 눌리면 age에 1 추가하고 count 에도 1 추가해서 count 가 3미만일때 만 age에 1씩 추가해서 22를 만들고 싶은상황.
+-   근데 위에서 말했듯이 useState 변경 함수는 async 처리가 되어 버려서, 내가 3번째 눌렀을때, setCount 가 먼저 처리되어야 하는데, if문보다 뒤에 처리가되서 if문이 돌아가는 시점은 아직 set 이 2일때가 되버림. 그래서 if문이 먼저 돌고 그다음 set 에 1이 추가되서 3이되고 그 다음부터는 if 문이 동작하지 않게 되지.
+-   이점을 해결하기 위해서 useEffect 를 사용하면 됨.
+
+```
+useEffect(()=>{
+  if ( count < 3 ) {
+    setAge(age+1)
+  }
+ }, [count])
+
+let [count,setCount] = useState(0);
+let [age,setAge] = useState(20);
+
+button onClick(() => {
+    setCount(set += 1)
+})
+
+```
+
+-   이런식으로 count 가 변경될때마다 age 에 값을 추가하는 코드를 실행시키도록 하면 위와같은 오류를 방지할 수 있음.
+    <br><br>
+
+## node.js, express 연동하기
+
+---
+
+-   서버 생성법..?
+
+    1.  nodejs 설치
+    2.  작업폴더 만들고 에디터로 오픈
+    3.  server.js 만들어서 코드 복붙
+
+    ```
+    const express = require('express')
+    const app = express()
+    const path = require('path')
+
+    app.listen(8080, function(){
+        console.log('listening on 8080);
+    })
+    ```
+
+    4.  에디터 터미널 열어서 npm init -y
+    5.  npm install express 설치
+    6.  리액트 프로젝트 빌드
+    7.  빌드한 프로젝트 폴더를 서버 프로젝트 폴더에 넣어줌
+    8.  server.js 파일에 get 코드 넣으면 됨
+
+    ```
+    //static 파일의 이미지나 등등을 사용하겠다.
+    app.use(express.static(path.join(__dirname, 'react-project/build')))
+
+    app.get('/', function(요청, 응답){
+        응답.sendFile(path.join(__dirname, '리액트로만든html파일경로'));
+    })
+    ```
+
+-   여러 페이지를 만들고 싶으면?
+
+    -   react router 를 쓰면 된다.
+    -   근데 리액트에서 라우터를 사용해서 페이지를 만들고 url로 페이지 접속하면 안됨.
+    -   그래서 서버에 코드를 추가해줘야하는데 아래의 코드를 제일 아래에 하나더 추가해서 경로에 \* 를 추가해주면 된다.
+
+    ```
+    app.get('*', function(요청, 응답){
+        응답.sendFile(path.join(__dirname, '리액트로만든html파일경로'));
+    })
+    ```
+
+-   DB를 가져오려면?
+-   npm install cors 설치해주고
+
+    ```
+    app.use(express.json());
+    var cors = require('cors');
+    app.use(cors());
+
+    app.get('/product', function(요청, 응답){
+        응답.json({name : 'key'})
+    })
+    ```
+
+    -   이렇게 해주면 된다. 그리고 react 프로젝트에서 서버로부터 데이터를 가져오려면 서버주소/product를 경로로 해서 ajax 요청이든 fetch든 하면 DB를 가져올 수 있음.
